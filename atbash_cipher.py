@@ -1,5 +1,5 @@
-# author:
-# date:
+# author: elia deppe
+# date: 7/28
 
 # difficulty: easy
 
@@ -43,3 +43,77 @@
 #   2 - Remember that lists can be built up, meaning it may be useful to start with an empty list.
 #
 # WRITE DOWN THE STEPS BEFORE ATTEMPTING THE PROGRAM
+alphabet = 'abcdefghijklmnopqrstuvwxyz'
+
+
+# function / mode
+#   parameter(s)
+#       none
+#   return value(s)
+#       mode | string | which mode to use the cipher in, encryption or decryption.
+#
+# description: get the mode from the user, in order to encrypt or decrypt the text
+def mode():
+    mode = ''
+    while mode != 'encrypt' and mode != 'decrypt':
+        mode = input('>> mode\n')
+
+        if mode != 'encrypt' and mode != 'decrypt':
+            print(
+                '>> mode options' '\n'
+                '>>     [encrypt, decrypt]' '\n'
+            )
+    return mode
+
+
+# function / atbash
+#   parameter(s)
+#       plain_text | string | the text to be encrypted (or unencrypted)
+#   return value(s)
+#       ciphertext | string | the encrypted (or unencrypted) text
+# description: encrypts plain_text using the atbash cipher, a weak transposition cipher.
+def atbash(plain_text, lower_alphabet=alphabet):
+    lower_cipher = lower_alphabet[::-1]  # the cipher, which is the string but backwards
+
+    upper_alphabet = lower_alphabet.upper()  # our alphabet for upper case letters
+    upper_cipher = upper_alphabet[::-1]  # the cipher to match
+
+    cipher_text = ''  # we start with an empty cipher
+
+    for char in plain_text:
+        # if the character is a letter, we encrypt it
+        if char in lower_alphabet + upper_alphabet:
+            # if-else to maintain case sensitivity
+            if char in lower_alphabet:
+                position = lower_alphabet.find(char)  # get the character's position from the regular alphabet
+                cipher_char = lower_cipher[position]  # use that position for the transposed character
+            else:
+                position = upper_alphabet.find(char)
+                cipher_char = upper_cipher[position]
+
+            cipher_text += cipher_char  # append the transposed character to cipher text
+
+        # otherwise we just attach it to the string
+        else:
+            cipher_text += char
+
+    return cipher_text
+
+
+def main():
+    print('>> atbash cipher')
+
+    if mode() == 'encrypt':
+        plain_text = input('>> plain text' '\n' '>> ')
+        cipher_text = atbash(plain_text)
+    else:
+        cipher_text = input('>> cipher text' '\n' '>> ')
+        plain_text = atbash(cipher_text, lower_alphabet=alphabet[::-1])
+
+    print(
+        f'>> plain text  | {plain_text}' '\n'
+        f'>> cipher text | {cipher_text}'
+    )
+
+
+main()

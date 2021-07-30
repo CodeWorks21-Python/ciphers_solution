@@ -1,5 +1,5 @@
-# author:
-# date:
+# author: elia deppe
+# date: 7/28
 
 # difficulty: medium
 
@@ -41,4 +41,48 @@
 #   3 - Print the result to the user.
 #
 # WRITE CODE BELOW #
+lower_alphabet = 'abcdefghijklmnopqrstuvwxyz'
+upper_alphabet = lower_alphabet.upper()
+alphabet = lower_alphabet + upper_alphabet
 
+
+def get_shift():
+    while True:
+        try:
+            shift = int(input('>> shift | '))
+            return shift
+        except ValueError:
+            print('>> invalid value for shift, must be an integer')
+
+
+def rotational_cipher(plain_text, shift):
+    cipher_text = ''
+
+    for char in plain_text:
+        if char in alphabet:
+            position = lower_alphabet.find(char.lower())
+            position = (position + shift) % len(lower_alphabet)
+
+            if char in lower_alphabet:
+                cipher_text += lower_alphabet[position]
+            else:
+                cipher_text += upper_alphabet[position]
+        else:
+            cipher_text += char
+
+    return cipher_text
+
+
+def main():
+    plain_text = input('>> rotational cipher' '\n' '>> plain text | ')
+    shift = get_shift()
+
+    cipher_text = rotational_cipher(plain_text, shift)
+
+    print(
+        f'>> plain text  | {plain_text}' '\n'
+        f'>> cipher text | {cipher_text}'
+    )
+
+
+main()
